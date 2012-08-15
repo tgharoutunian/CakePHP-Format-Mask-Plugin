@@ -6,22 +6,12 @@ class FormatComponent extends Object {
   /**
    * PUBLIC METHODS
    */
-  public function initialize() {
+  public function initialize() {}
+  public function startup() {}
+  public function beforeRender() {}
+  public function beforeRedirect() {}
+  public function shutdown() {}
 
-  }
-  public function startup() {
-
-  }
-  public function beforeRedirect() {
-
-  }
-  public function beforeRender() {
-
-  }
-  public function shutdown() {
-
-  }
-  
   public function format( $what, $data, $regex = null ) {
     switch( strtolower( $what ) ) {
       case 'phone':
@@ -52,5 +42,24 @@ class FormatComponent extends Object {
     else {
       return $this->PhoneNumber->explode( $digits );
     }
+  }
+
+  /**
+   * formats a phone number
+   *
+   * @param string $phone number to format
+   *
+   * @return string $phone reformatted string
+   */
+  public function format_phone($phone)
+  {
+      $phone = preg_replace("/[^0-9]/", "", $phone);
+      if(strlen($phone) == 7) {
+          return preg_replace("/([0-9]{3})([0-9]{4})/", "$1-$2", $phone);
+      } elseif (strlen($phone) == 10) {
+          return preg_replace("/([0-9]{3})([0-9]{3})([0-9]{4})/", "($1) $2-$3", $phone);
+      } else {
+          return $phone;
+      }
   }
 }
